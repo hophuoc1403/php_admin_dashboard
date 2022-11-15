@@ -17,12 +17,32 @@ function getData($table,$id=0){
 }
 
 function addData($table,$data){
-
-
+	global $conn;
+	$valueData = "";
 	$keyData = "";
-	foreach ($table as $key => $value) {
-		$keyData .= $key . ",";
+	foreach ($data as $key => $value) {
+		$keyData .= $key."," ;
+
+		$valueData .= "'" . $value . "',";
 	}
+	 $keyData=trim($keyData,",");
+	 $valueData=trim($valueData,",");
+	 return mysqli_query($conn,"insert into $table($keyData) values ($valueData)");
 }
 
-?>
+$updateData = function (string $table,array $data,int $id) use ($conn) {
+    $valueUpdate = "";
+    foreach ($data as $key => $value) {
+
+        $valueUpdate .=  "$key = '$value' ,";
+    }
+
+    $valueUpdate=trim($valueUpdate,",");
+
+    return mysqli_query($conn,"update $table set $valueUpdate where id=$id");
+};
+
+
+
+
+

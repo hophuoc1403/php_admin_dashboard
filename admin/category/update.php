@@ -1,12 +1,12 @@
 <?php
-
 $errors = [];
 if(isset($_GET['id'])){
     $id = $_GET['id'];
-    $current = mysqli_query($conn,"select * from category where id=$id");
+//    $current = mysqli_query($conn,"select * from category where id=$id");
+    $current=getData('category',$id);
     $current = mysqli_fetch_assoc($current);
 }
-if(isset($_POST['submit'])){
+if(isset($_POST['name'])){
     $name = $_POST['name'];
     $status = $_POST['status'];
     if($name == "" ){
@@ -21,9 +21,11 @@ if(isset($_POST['submit'])){
         }
     }
     if(empty($errors)){
-
-        $updateCate = mysqli_query($conn,
-            "update category set name='$name',status=$status where id=$id");
+        if (!empty($updateData)) {
+            $updateCate =  $updateData('category',$_POST,$id);
+        }
+//        $updateCate = mysqli_query($conn,
+//            "update category set name='$name',status=$status where id=$id");
         var_dump($updateCate);
         if($updateCate){
             echo "<script>
@@ -50,6 +52,6 @@ if(isset($_POST['submit'])){
         <label for=""><input <?= $current['status'] == 1 ? "checked" : "" ?> type="radio" value="1" name="status" checked id="">Available</label>
         <label for=""><input <?= $current['status'] == 0 ? "checked" : "" ?> type="radio" value="0" name="status" id="">Unavailable</label>
     </div>
-    <button name="submit" class="btn btn-success" type="submit">Update</button>
+    <button  class="btn btn-success" type="submit">Update</button>
 </form>
 <a href="?page=category/index.php">Cancel</a>

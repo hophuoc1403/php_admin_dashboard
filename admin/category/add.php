@@ -1,7 +1,7 @@
 <?php
 
 $errors = [];
-if(isset($_POST['submit'])){
+if(isset($_POST['name'])){
     $name = $_POST['name'];
     $status = $_POST['status'];
     if($name == "" ){
@@ -16,9 +16,9 @@ if(isset($_POST['submit'])){
         }
     }
     if(empty($errors)){
-
-        $addCate = mysqli_query($conn,
-            "insert into category(id,name,status) values (null,'$name',$status)");
+        $addCate = (addData('category',$_POST));
+//        $addCate = mysqli_query($conn,
+//            "insert into category(id,name,status) values (null,'$name',$status)");
         if($addCate){
             echo "<script>
     location.href = '?page=category/index.php';
@@ -47,7 +47,7 @@ if(isset($_POST['submit'])){
         <label for=""><input type="radio" value="1" name="status" checked id="">Available</label>
         <label for=""><input type="radio" value="0" name="status" id="">Unavailable</label>
     </div>
-    <button name="submit" class="btn btn-success" type="submit">Create</button>
+    <button  class="btn btn-success" type="submit">Create</button>
 </form>
 
 <a href="?page=category/index.php">Cancel</a>
