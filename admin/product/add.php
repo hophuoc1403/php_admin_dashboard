@@ -2,11 +2,11 @@
 
 $errors = [];
 $category = mysqli_query($conn, "select * from category");
-if (isset($_POST['submit'])) {
+if (isset($_POST['name'])) {
     $name = $_POST['name'];
     $price = $_POST['price'];
     $sale = $_POST['sale'];
-    $desc = $_POST['desc'];
+    $desc = $_POST['description'];
     $status = $_POST['status'];
     $category_id = $_POST['category_id'];
 
@@ -35,16 +35,17 @@ if (isset($_POST['submit'])) {
         $file = $_FILES['image'];
         $file_name = time() . $file['name'];
 
-        move_uploaded_file($file['tmp_name'], "uploads/" . $file_name);
+        move_uploaded_file($file['tmp_name'], "../uploads/" . $file_name);
     }
 
     var_dump($errors);
     if (empty($errors)) {
 
-        $addCate = mysqli_query($conn,
-            "INSERT INTO `product`( `name`, `price`, `sale_price`, `image`, `description`, `status`, `category_id`) VALUES 
-                ('$name','$price','$sale','$file_name','$desc','$status','$category_id')");
-        if ($addCate) {
+//        $addCate = mysqli_query($conn,
+//            "INSERT INTO `product`( `name`, `price`, `sale_price`, `image`, `description`, `status`, `category_id`) VALUES
+//                ('$name','$price','$sale','$file_name','$desc','$status','$category_id')");
+        $addProduct = addData('product',[...$_POST,"image" => $file_name]);
+        if ($addProduct) {
             echo "<script>
     location.href = '?page=product/index.php';
 </script>";
@@ -73,7 +74,7 @@ if (isset($_POST['submit'])) {
     </div>
     <div class="mb-3">
         <label for="exampleFormControlInput1" class="form-label">Sale Price</label>
-        <input type="text" name="sale" class="form-control" placeholder="sale" value="<?= $_POST['sale'] ?? "" ?>">
+        <input type="text" name="sale_price" class="form-control" placeholder="sale" value="<?= $_POST['sale'] ?? "" ?>">
         <span class="text-danger"><?= $errors['sale_err'] ?? "" ?></span>
     </div>
     <div class="mb-3">
@@ -83,7 +84,7 @@ if (isset($_POST['submit'])) {
     </div>
     <div class="mb-3">
         <label for="exampleFormControlInput1" class="form-label">Description
-            <input type="text" name="desc" class="form-control" placeholder="desc" value="<?= $_POST['desc'] ?? "" ?>">
+            <input type="text" name="description" class="form-control" placeholder="description" value="<?= $_POST['description'] ?? "" ?>">
         </label>
         <span class="text-danger"><?= $errors['desc_err'] ?? "" ?></span>
     </div>
@@ -103,7 +104,7 @@ if (isset($_POST['submit'])) {
         <label for=""><input type="radio" value="1" name="status" checked id="">Available</label>
         <label for=""><input type="radio" value="0" name="status" id="">Unavailable</label>
     </div>
-    <button name="submit" class="btn btn-success" type="submit">Create</button>
+    <button  class="btn btn-success" type="submit">Create</button>
 </form>
 
 <a href="?page=product/index.php">Cancel</a>

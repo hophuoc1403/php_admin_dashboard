@@ -37,7 +37,7 @@ if (isset($_POST['submit'])) {
         $file = $_FILES['image'];
         $file_name = time() . $file['name'];
         unlink('uploads/' . $products['image']);
-        move_uploaded_file($file['tmp_name'], "uploads/" . $file_name);
+        move_uploaded_file($file['tmp_name'], "../uploads/" . $file_name);
     } else
         $file_name = $products['image'];
 

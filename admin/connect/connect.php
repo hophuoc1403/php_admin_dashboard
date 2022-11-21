@@ -8,11 +8,12 @@ if($conn->connect_error){
    echo $conn->errno;
 };
 
-function getData($table,$id=0){
+function getData($table,$id=0,$start=0,$limit=0 ){
 	global $conn;
 	$queryId = $id ? "where id = $id " : "";
-	$query =  "select * from $table $queryId";
-
+    $queryLimit = ($limit) ?
+        "limit $start,$limit" : "";
+	$query =  "select * from $table $queryId $queryLimit";
 	return mysqli_query($conn,$query);
 }
 
@@ -27,6 +28,7 @@ function addData($table,$data){
 	}
 	 $keyData=trim($keyData,",");
 	 $valueData=trim($valueData,",");
+
 	 return mysqli_query($conn,"insert into $table($keyData) values ($valueData)");
 }
 

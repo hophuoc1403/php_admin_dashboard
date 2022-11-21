@@ -8,7 +8,7 @@ if(isset($_GET['id'])){
     $product = mysqli_query($conn,"select * from product where  id= $id");
     $product=mysqli_fetch_assoc($product);
     if($product['image'] != ''){
-        unlink('uploads/'.$product['image']);
+        unlink('../uploads/'.$product['image']);
     }
 
     if($delete){

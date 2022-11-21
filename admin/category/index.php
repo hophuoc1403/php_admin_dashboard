@@ -2,7 +2,12 @@
 
 if(isset($conn)){
     $categories = mysqli_query($conn,"select * from category");
-
+    $total = mysqli_num_rows($categories);
+    $limit = 4;
+    $total_page = ceil($total/$limit);
+    $current_page = $_GET['p'] ?? 1;
+    $start = ($current_page-1) * $limit;
+    $categories = getData('category',0,$start,$limit);
 
 }
 ?>
@@ -33,3 +38,22 @@ if(isset($conn)){
     <?php endforeach; ?>
     </tbody>
 </table>
+<nav aria-label="Page navigation">
+    <ul class="pagination justify-content-center">
+        <li class="page-item <?= $current_page == 1 ? "disable" : "" ?>">
+            <a class="page-link" href="?page=category/index.php&p=<?= $current_page >  1 ? $current_page -1 : 1 ?>" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+                <span class="sr-only">Previous</span>
+            </a>
+        </li>
+        <?php for($i = 1;$i <= $total_page;$i++) {?>
+            <li class="page-item <?= $i == $current_page ? 'active' : "" ?>"><a class="page-link" href="?page=category/index.php&p=<?= $i ?>"><?= $i ?></a></li>
+        <?php } ?>
+        <li class="page-item">
+            <a class="page-link" href="#" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+                <span class="sr-only">Next</span>
+            </a>
+        </li>
+    </ul>
+</nav>
